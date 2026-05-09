@@ -21,13 +21,9 @@ export class User {
   @Column()
   password: string;
 
-  @CreateDateColumn({
-    type: 'timestamptz',
-  })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamptz',
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 }
