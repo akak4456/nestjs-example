@@ -23,6 +23,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         database: config.get<string>('DB_DATABASE'),
         autoLoadEntities: true,
         synchronize: process.env.NODE_ENV !== 'production',
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
   ],
