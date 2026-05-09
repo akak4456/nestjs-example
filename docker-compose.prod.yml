@@ -8,3 +8,5 @@ services:
     env_file:
       - .env.prod
     restart: always
+    environment:
+      TZ: Asia/Seoul
