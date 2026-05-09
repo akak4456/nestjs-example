@@ -1,0 +1,10 @@
+# docker-compose.prod.yml
+services:
+  app:
+    image: adele559/nestjs-app:latest
+    container_name: nestjs-prod-app
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.prod
+    restart: always
