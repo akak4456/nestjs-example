@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Deploy to EC2
 
 on:
@@ -29,31 +28,31 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/nestjs-app:latest
 
       - name: Prepare EC2 directory
-          uses: appleboy/ssh-action@v1.0.3
-          with:
-            host: ${{ secrets.EC2_HOST }}
-            username: ${{ secrets.EC2_USER }}
-            key: ${{ secrets.EC2_PRIVATE_KEY }}
-            script: |
-              mkdir -p /home/ubuntu/nestjs-app
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            mkdir -p /home/ec2-user/nestjs-app
 
       - name: Copy docker-compose.prod.yml to EC2
-          uses: appleboy/scp-action@v0.1.7
-          with:
-            host: ${{ secrets.EC2_HOST }}
-            username: ${{ secrets.EC2_USER }}
-            key: ${{ secrets.EC2_PRIVATE_KEY }}
-            source: "docker-compose.prod.yml"
-            target: "/home/ubuntu/nestjs-app"
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: 'docker-compose.prod.yml'
+          target: '/home/ec2-user/nestjs-app'
 
       - name: Deploy on EC2
-          uses: appleboy/ssh-action@v1.0.3
-          with:
-            host: ${{ secrets.EC2_HOST }}
-            username: ${{ secrets.EC2_USER }}
-            key: ${{ secrets.EC2_PRIVATE_KEY }}
-            script: |
-              cd /home/ubuntu/nestjs-app
-              docker compose -f docker-compose.prod.yml pull
-              docker compose -f docker-compose.prod.yml up -d
-              docker image prune -f
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ec2-user/nestjs-app
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f
