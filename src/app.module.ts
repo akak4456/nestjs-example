@@ -22,7 +22,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_DATABASE'),
         autoLoadEntities: true,
-        synchronize: process.env.NODE_ENV !== 'production',
+        synchronize: true,
+        // synchronize: process.env.NODE_ENV !== 'production', TODO 나중에 실제로 배포할 시 이거 주석 풀고 위에 synchronize: true 는 제거할 것
         ssl:
           process.env.NODE_ENV === 'production'
             ? { rejectUnauthorized: false }
